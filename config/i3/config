@@ -34,7 +34,7 @@ set $base0F #fcc09e
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:System San Francisco Display 12
+font pango:Meslo LG M for Powerline 12
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -199,7 +199,7 @@ client.urgent $base02 $base08 $base00 $base0F
 # finds out, if available)
 bar {
         #status_command i3status
-        status_command i3blocks -c ~/.config/i3/i3blocks.conf
+        status_command i3blocks
         font pango: System San Francisco Display, FontAwesome 12
         position top
         tray_padding 1px
@@ -217,6 +217,18 @@ bar {
               urgent_workspace   $base01 $base01    $base08
         }
 }
+
+set $keyboard_layout Keyboard Layout: (f) Canadian French, (e) US English
+mode "$keyboard_layout" {
+
+	bindsym f exec --no-startup-id setxkbmap ca -variant fr,mode "default"
+	bindsym e exec --no-startup-id setxkbmap us ,mode "default"
+
+	# back to normal: Enter or Escape
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+bindsym $mod+shift+Z mode "$keyboard_layout"
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
@@ -236,14 +248,14 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
-exec QT_AUTO_SCREEN_SCALE_FACTOR=2 insync start
 exec evolution
 # Set wallpaper
-exec_always feh --bg-scale ~/Pictures/archlinux.jpg
+exec_always feh --bg-scale ~/Pictures/gnulinux.jpg
 # Set tapping enable for touchpad
-exec_always xinput set-prop 'DLL07BE:01 06CB:7A13 Touchpad' 303 1
+exec_always xinput set-prop "SynPS/2 Synaptics TouchPad" 285 1
 # Open nm applet on start
 exec_always --no-startup-id nm-applet
+exec_always blueman-applet
 # TODO Figure out why it doesn't work
 #exec xrandr --dpi 200 && exec i3
 exec_always compton -f
